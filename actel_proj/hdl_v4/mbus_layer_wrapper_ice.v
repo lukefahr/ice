@@ -288,7 +288,7 @@ parameter STATE_FAIL_ACK = 8;
 parameter STATE_TX_START = 9;
 parameter STATE_TX_DATA = 10;
 parameter STATE_TX_WAIT_PEND = 11;
-//parameter STATE_TX_WORD0 = 12;
+//parameter STATE_TX_WORD0 = 12; //unused
 parameter STATE_TX_WORD1 = 13;
 parameter STATE_TX_FRAGMENT = 14;
 parameter STATE_TX_END0 = 15;
@@ -464,7 +464,7 @@ always @* begin
 		end
 
 		//MBus TX states...
-		STATE_TX_START: begin
+		STATE_TX_START: begin //0x9
 			if(~hd_frame_valid) begin
 				next_state = STATE_TX_END0;
 			end else if(shift_count == 4'd4) begin
@@ -474,7 +474,7 @@ always @* begin
 			end
 		end
 
-		STATE_TX_DATA: begin //a
+		STATE_TX_DATA: begin //0xa
 			shift_in_txdata = tx_char_valid;
 			if(tx_char_valid) begin
 				if(tx_char[8] && hd_is_fragment) begin
@@ -490,27 +490,17 @@ always @* begin
 				next_state = STATE_TX_END0;
 		end
 
-		STATE_TX_WAIT_PEND: begin //b
+		STATE_TX_WAIT_PEND: begin //0xb
             //ANDREW: multi-word transmissions must wait until 
             // txack goes low from last tx and 
             // mbus_txack runs on mbus_clk, not clk
-            if (~mbus_txack)  begin 
-                if(~hd_frame_valid | tx_char_valid) begin
-                    mbus_txpend_next = hd_frame_valid;
-                    next_state = STATE_TX_WORD1;
-                end
-            end
+            if (~mbus_txack)  
+                next_state = STATE_TX_WORD1;
 		end
-
-        //We can skip this step
-		//STATE_TX_WORD0: begin // c
-		//	mbus_txpend_next = mbus_txpend;
-		//	next_state = STATE_TX_WORD1;
-		//end
 
 		STATE_TX_WORD1: begin //d
 			mbus_txreq_next = 1'b1;
-			mbus_txpend_next = mbus_txpend;
+			mbus_txpend_next = hd_frame_valid;
 			if(mbus_txack) 
 				next_state = STATE_TX_DATA;
 		end
