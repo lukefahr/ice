@@ -384,8 +384,14 @@ assign GPIO[12]  = mb0.mbus_txfail;
 assign GPIO[13]  = mb0.mbus_txsucc;
 assign GPIO[14]  = mb0.mbus_txack;
 assign GPIO[15]  = mb0.ack_message_frame_valid;
-assign GPIO[16]  = mb0.hd_is_fragment;
-assign GPIO[17]  = mb0.tx_char[8];
+assign GPIO[16]  = mb0.mbus_txreq;
+assign GPIO[17]  = mb0.mbus_txpend;
+assign GPIO[18]  = mb0.hd_frame_latch_tail;
+assign GPIO[19]  = mb0.hd_header_done;
+assign GPIO[20]  = mb0.hd_is_fragment;
+assign GPIO[21]  = mb0.tx_char[8];
+assign GPIO[22]  = mb0.reset;
+assign GPIO[23]  = mb0.clk;
 ////GPIO interface
 ////assign sl_arb_request[4] = 1'b0;
 //gpio_in tgi1(
