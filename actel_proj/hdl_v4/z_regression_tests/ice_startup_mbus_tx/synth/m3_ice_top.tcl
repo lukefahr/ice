@@ -17,10 +17,11 @@ suppress_message {"VER-130"}
 #/* The following five lines must be updated for every      */
 #/* new design                                              */
 #/***********************************************************/
-read_file -f sverilog [list "../sys_defs.vh" "../verilog/pipeline.v" "../verilog/if_stage.v" "../verilog/id_stage.v" "../verilog/ex_stage.v" "../verilog/mem_stage.v" "../verilog/wb_stage.v" "../verilog/regfile.v"]
-set design_name pipeline
-set clock_name clock
-set CLK_PERIOD 30
+read_file -f sverilog [list "../../../include/sim.v" "../../../include/ice_def.v" "../../../include/mbus_def.v" "../../../mbus_addr_rf.v" "../../../mbus_swapper.v" "../../../mbus_wire_ctrl.v" "../../../mbus_ctrl.v" "../../../mbus_node_master_en.v" "../../../mbus_general_layer_wrapper.v" "../../../ack_generator.v" "../../../basics_int.v" "../../../gpio_int.v" "../../../bus_interface.v" "../../../debounce_ms.v" "../../../ein_int.v" "../../../ein_mod.v" "../../../global_event_counter.v" "../../../goc_int.v" "../../../header_decoder.v" "../../../ice_bus.v" "../../../ice_bus_controller.v"  "../../../mbus_layer_wrapper_ice.v" "../../../message_fifo.v" "../../../pmu_i2c.v" "../../../pmu_int.v" "../../../por.v" "../../../priority_select.v" "../../../pwm_mod.v" "../../../ram.v" "../../../uart.v" "../../../toplevel.v"  ]
+set design_name m3_ice_top 
+elaborate $design_name
+set clock_name SYS_CLK
+set CLK_PERIOD 50
 
 
 #/***********************************************************/
@@ -113,6 +114,7 @@ if {  $dc_shell_status != [list] } {
   uniquify
   ungroup -all -flatten
   redirect $chk_file { check_design }
+  link
   compile -map_effort medium
   write -hier -format verilog -output $netlist_file $design_name
   write -hier -format ddc -output $ddc_file $design_name

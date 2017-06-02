@@ -92,6 +92,7 @@ ack_generator ag0(
 	.generate_nak(1'b0),
 	.eid_in(hd_header_eid),
 	
+    .message_wait(1'h0),
 	.message_data(ack_message_data),
 	.message_data_valid(ack_message_data_valid),
 	.message_frame_valid(ack_message_frame_valid)
@@ -102,7 +103,7 @@ ein_mod pm0(
 	.clk(clk), 
 	.resetn(~reset), 
 	.CLK_DIV(CLK_DIV),
-	.fifo_din(in_char), 
+	.fifo_din(in_char[7:0]), 
 	.goc_mode(goc_mode),
 	.fragment(hd_is_fragment),
 	.fifo_RE(hd_frame_next), 
