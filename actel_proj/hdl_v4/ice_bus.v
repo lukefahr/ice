@@ -293,7 +293,7 @@ mbus_layer_wrapper_ice mb0(
 	
 	//Global counter for 'time-tagging'
 	.global_counter(global_counter),
-	.incr_ctr(mbus_ctr_incr),
+	.global_counter_inc(mbus_ctr_incr),
 	
 	.debug(mb_debug)
 );
@@ -400,51 +400,51 @@ ein_int ei0(
 );
 
 
-//ANDREW - DEBUGGING HACK
-//FIXME 
-//TODO
-//CHANGEME
-//AHH, DONT KEEP ME
-assign GPIO[4:0] = mb0.state;
-assign GPIO[9:5] = mb0.next_state;
-assign GPIO[10]  = mb0.tx_char_valid;
-assign GPIO[11]  = mb0.hd_frame_valid;
-assign GPIO[12]  = mb0.mbus_txfail;
-assign GPIO[13]  = mb0.mbus_txsucc;
-assign GPIO[14]  = mb0.mbus_txack;
-assign GPIO[15]  = mb0.ack_message_frame_valid;
-assign GPIO[16]  = mb0.mbus_txreq;
-assign GPIO[17]  = mb0.mbus_txpend;
-assign GPIO[18]  = mb0.hd_frame_latch_tail;
-assign GPIO[19]  = mb0.hd_header_done;
-assign GPIO[20]  = mb0.hd_is_fragment;
-assign GPIO[21]  = mb0.tx_char[8];
-assign GPIO[22]  = mb0.reset;
-assign GPIO[23]  = mb0.clk;
-////GPIO interface
-////assign sl_arb_request[4] = 1'b0;
-//gpio_in tgi1(
-//	.clk(clk),
-//	.reset(reset_syn1),
-//	
-//	.GPIO(GPIO),
-//	
-//	.gpio_level(gpio_level),
-//	.gpio_direction(gpio_direction),
-//	.gpio_int_enable(gpio_int_enable),
-//
-//	//Slave output bus
-//	.sl_data(sl_data),
-//	.sl_addr(sl_addr),
-//	.sl_tail(sl_tail),
-//	.sl_latch_tail(sl_latch_tail),
-//	.sl_arb_request(sl_arb_request[4]),
-//	.sl_arb_grant(sl_arb_grant[4]),
-//	
-//	//Global counter for 'time-tagging'
-//	.global_counter(global_counter),
-//	.incr_ctr(gpio_ctr_incr)
-//);
+////ANDREW - DEBUGGING HACK
+////FIXME 
+////TODO
+////CHANGEME
+////AHH, DONT KEEP ME
+//assign GPIO[4:0] = mb0.state;
+//assign GPIO[9:5] = mb0.next_state;
+//assign GPIO[10]  = mb0.tx_char_valid;
+//assign GPIO[11]  = mb0.hd_frame_valid;
+//assign GPIO[12]  = mb0.mbus_txfail;
+//assign GPIO[13]  = mb0.mbus_txsucc;
+//assign GPIO[14]  = mb0.mbus_txack;
+//assign GPIO[15]  = mb0.ack_message_frame_valid;
+//assign GPIO[16]  = mb0.mbus_txreq;
+//assign GPIO[17]  = mb0.mbus_txpend;
+//assign GPIO[18]  = mb0.hd_frame_latch_tail;
+//assign GPIO[19]  = mb0.hd_header_done;
+//assign GPIO[20]  = mb0.hd_is_fragment;
+//assign GPIO[21]  = mb0.tx_char[8];
+//assign GPIO[22]  = mb0.reset;
+//assign GPIO[23]  = mb0.clk;
+//GPIO interface
+//assign sl_arb_request[4] = 1'b0;
+gpio_int tgi1(
+	.clk(clk),
+	.reset(reset_syn1),
+	
+	.GPIO(GPIO),
+	
+	.gpio_level(gpio_level),
+	.gpio_direction(gpio_direction),
+	.gpio_int_enable(gpio_int_enable),
+
+	//Slave output bus
+	.sl_data(sl_data),
+	.sl_addr(sl_addr),
+	.sl_tail(sl_tail),
+	.sl_latch_tail(sl_latch_tail),
+	.sl_arb_request(sl_arb_request[4]),
+	.sl_arb_grant(sl_arb_grant[4]),
+	
+	//Global counter for 'time-tagging'
+	.global_counter(global_counter),
+	.incr_ctr(gpio_ctr_incr)
+);
 
 //PMU interface
 wire [7:0] pmu_debug;
