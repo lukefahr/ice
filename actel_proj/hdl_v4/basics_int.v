@@ -106,7 +106,7 @@ wire [7:0] mf_data = (ack_message_data_valid) ? ack_message_data : local_data;
 wire mf_data_latch = local_data_latch | ack_message_data_valid;
 wire mf_frame_valid = local_frame_valid | ack_message_frame_valid;
 message_fifo 
-#( .DEPTH_LOG2(5) )
+#( .DEPTH_LOG2(4) )
 mf1(
 	.clk(clk),
 	.rst(rst),
