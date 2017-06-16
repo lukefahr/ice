@@ -74,17 +74,20 @@ module mbus_general_layer_wrapper(
 parameter THRESHOLD = 20'h05fff;
 
 
-//ANDREW hack to test things...
+//ANDREW: double latch txack as it crosses clock domains
 wire txack_unsync;
-reg txack_sync;
+reg txack_sync0;
+reg txack_sync1;
 always @(posedge CLK_EXT) begin
     if (RESETn == 0) begin
-        txack_sync <= `SD 0;
+        txack_sync0 <= `SD 0;
+        txack_sync1 <= `SD 0;
     end else begin
-        txack_sync <= `SD txack_unsync; 
+        txack_sync0 <= `SD txack_unsync; 
+        txack_sync1 <= `SD txack_sync0;
     end
 end
-assign TX_ACK = txack_sync;
+assign TX_ACK = txack_sync1;
 
 
 wire	CLK_CTRL_TO_NODE;
