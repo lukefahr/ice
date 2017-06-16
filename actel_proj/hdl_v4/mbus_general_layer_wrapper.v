@@ -73,6 +73,20 @@ module mbus_general_layer_wrapper(
 );
 parameter THRESHOLD = 20'h05fff;
 
+
+//ANDREW hack to test things...
+wire txack_unsync;
+reg txack_sync;
+always @(posedge CLK_EXT) begin
+    if (RESETn == 0) begin
+        txack_sync <= `SD 0;
+    end else begin
+        txack_sync <= `SD txack_unsync; 
+    end
+end
+assign TX_ACK = txack_sync;
+
+
 wire	CLK_CTRL_TO_NODE;
 wire	DOUT_CTRL_TO_NODE;
 wire	NODE_RX_REQ;
@@ -152,7 +166,8 @@ mbus_node node0(
 	.TX_PEND(TX_PEND), 
 	.TX_REQ(TX_REQ), 
 	.TX_PRIORITY(TX_PRIORITY),
-	.TX_ACK(TX_ACK), 
+	//.TX_ACK(TX_ACK), 
+	.TX_ACK(txack_unsync), 
 	.RX_ADDR(RX_ADDR), 
 	.RX_DATA(RX_DATA), 
 	.RX_REQ(NODE_RX_REQ), 
