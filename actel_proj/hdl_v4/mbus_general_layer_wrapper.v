@@ -78,16 +78,26 @@ parameter THRESHOLD = 20'h05fff;
 wire txack_unsync;
 reg txack_sync0;
 reg txack_sync1;
+wire rxreq_unsync;
+reg rxreq_sync0;
+reg rxreq_sync1;
 always @(posedge CLK_EXT) begin
     if (RESETn == 0) begin
         txack_sync0 <= `SD 0;
         txack_sync1 <= `SD 0;
+
+        rxreq_sync0 <= `SD 0;
+        rxreq_sync1 <= `SD 0;
     end else begin
         txack_sync0 <= `SD txack_unsync; 
         txack_sync1 <= `SD txack_sync0;
+
+        rxreq_sync0 <= `SD rxreq_unsync; 
+        rxreq_sync1 <= `SD rxreq_sync0;
     end
 end
 assign TX_ACK = txack_sync1;
+assign RX_REQ = rxreq_sync1;
 
 
 wire	CLK_CTRL_TO_NODE;
@@ -118,7 +128,7 @@ begin
 		ctrl_addr_match = 0;
 end
 
-assign RX_REQ = (ctrl_addr_match & MASTER_EN)? 1'b0 : NODE_RX_REQ;
+assign RX_REQ_unsync = (ctrl_addr_match & MASTER_EN)? 1'b0 : NODE_RX_REQ;
 
 always @ (posedge CLK_EXT or negedge RESETn_local)
 begin
